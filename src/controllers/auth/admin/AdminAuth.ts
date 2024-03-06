@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { Admin } from "../../../schema/MongoSchema";
-import { TokenVerifyType } from "../../../../types/typings";
+import { Admin, FatafatData } from "../../../schema/MongoSchema";
+import { GameEntry, TokenVerifyType } from "../../../../types/typings";
 
 export const AdminRegister = async (req: Request, res: Response) => {
   const { email, password, confirmPassword } = req.body; // get data from reqest's body
@@ -111,5 +111,73 @@ export const AdminTokenVerification = (req: Request, res: Response) => {
       message: "Something happened when verifying admin data",
       error,
     });
+  }
+};
+
+export const GeneratedData = async (req: Request, res: Response) => {
+  // Get the current date from the request parameters
+  const currentDate: string = req.params.date;
+
+  try {
+    // Fetch the last ten records excluding the current day
+    const lastTen = await FatafatData.find({ date: { $ne: currentDate } })
+      .sort({ createdAt: -1 })
+      .limit(10); // Fetch only the last ten records
+
+    const originalArray: any = lastTen;
+
+    const newArray: number[][] = originalArray.map((entry: any) => {
+      const innerArray: number[] = Array(8).fill(null);
+
+      entry.data.forEach((gameData: any) => {
+        if (gameData.index < 8) {
+          innerArray[gameData.index] = gameData.gameNumber;
+        }
+      });
+
+      return innerArray;
+    });
+
+    const historicalData: (number | null)[][] = newArray;
+
+    const predictHighestProbabilityBalls = (
+      data: (number | null)[][]
+    ): number[] | string => {
+      const allBalls: (number | null)[] = data
+        .flat()
+        .filter((ball) => ball !== null);
+
+      // Check if there are any non-closed slots
+      if (allBalls.length === 0) {
+        return "All closed or missing";
+      }
+
+      const ballCounter: Record<number, number> = {};
+      allBalls.forEach((ball) => {
+        if (ball !== null) {
+          ballCounter[ball] = (ballCounter[ball] || 0) + 1;
+        }
+      });
+
+      const sortedBalls = Object.entries(ballCounter).sort(
+        (a, b) => b[1] - a[1]
+      );
+      const mostCommonBalls = sortedBalls.slice(0, 3);
+
+      const predictedBalls: number[] = mostCommonBalls.map(([ball]) =>
+        parseInt(ball, 10)
+      );
+      return predictedBalls;
+    };
+
+    // Example usage
+
+    const result = predictHighestProbabilityBalls(historicalData);
+
+    return res.status(200).json(result);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error while finding the data", error });
   }
 };

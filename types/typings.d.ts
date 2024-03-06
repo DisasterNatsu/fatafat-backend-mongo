@@ -19,3 +19,18 @@ export interface TipsInterface {
   index: number;
   tip: string;
 }
+
+interface GameData {
+  index: number;
+  gameResultPatti: number;
+  gameNumber: number;
+  _id: string;
+}
+
+interface GameEntry {
+  _id: string;
+  date: string;
+  data: GameData[];
+  createdAt?: string;
+  __v: number;
+}
