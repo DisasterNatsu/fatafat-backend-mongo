@@ -64,3 +64,8 @@ export const Admin = mongoose.model("Admin", admin);
 
 // Export Tips model
 export const Tips = mongoose.model("Tips", tips);
+
+// Export Patti tips model
+
+// Export Patti Tips
+export const KolkataFFTips = mongoose.model("KolkataFFTips", tips);

@@ -5,7 +5,8 @@ import {
   getPreviousTenDays,
   getTipsData,
   previousData,
-  getPreviousTwoDays
+  getPreviousTwoDays,
+  getPattiTips,
 } from "../controllers/client/getFatafatData";
 
 const Router = express.Router();
@@ -15,5 +16,6 @@ Router.get("/last-ten/:date", getPreviousTenDays);
 Router.get("/previous/:date", previousData);
 Router.get("/tips/:date", getTipsData);
 Router.get("/last-two/:date", getPreviousTwoDays);
+Router.get("/patti-tips/:date", getPattiTips);
 
 export default Router;

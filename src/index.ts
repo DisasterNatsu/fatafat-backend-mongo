@@ -48,7 +48,6 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-
 app.options("*", cors(corsOptions));
 
 app.use(cors(corsOptions));
@@ -71,10 +70,8 @@ try {
   // listen
 
   app.listen(process.env.PORT || 8050, () =>
-    console.log(`Listning on port ${process.env.PORT || 8080}`)
+    console.log(`Listning on port ${process.env.PORT || 8050}`)
   );
 } catch (error) {
   console.log(error);
 }
-
-
