@@ -12,6 +12,9 @@ const Router = express.Router();
 Router.post("/add-new", isAdminAuth, postFatafatdata);
 Router.post("/add-tips", isAdminAuth, postBajiTips);
 Router.post("/add-patti-tips", isAdminAuth, postPattiTips);
+
+// added new
+
 Router.post("/delete-result", isAdminAuth, deleteFromResults);
 
 export default Router;
