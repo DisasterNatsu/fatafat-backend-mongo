@@ -48,9 +48,10 @@ export const AdminRegister = async (req: Request, res: Response) => {
 export const AdminLogIn = async (req: Request, res: Response) => {
   // get data from request's body
 
+
   const email: string = req.body.email!;
   const password: string = req.body.password!;
-
+ 
   if (!email || !password) {
     return res.status(400).json({ message: "Bad request" });
   }
@@ -59,10 +60,13 @@ export const AdminLogIn = async (req: Request, res: Response) => {
     // check if there is an email with the account with the provided email
     const adminInDb = await Admin.findOne({ email: email });
 
+
     // if there is no admin account with that email
     if (!adminInDb) return res.status(403).json({ message: "Unauthorized" });
 
     const isPasswordValid = bcrypt.compareSync(password, adminInDb.password!);
+
+    console.log(isPasswordValid);
 
     // if password not valid
 
@@ -78,7 +82,7 @@ export const AdminLogIn = async (req: Request, res: Response) => {
     );
 
     // response with data
-
+	console.log(token);
     return res.status(200).json({ authToken: token, email });
   } catch (error) {
     return res
@@ -122,7 +126,7 @@ export const GeneratedData = async (req: Request, res: Response) => {
     // Fetch the last ten records excluding the current day
     const lastTen = await FatafatData.find({ date: { $ne: currentDate } })
       .sort({ createdAt: -1 })
-      .limit(10); // Fetch only the last ten records
+      .limit(6); // Fetch only the last ten records
 
     const originalArray: any = lastTen;
 
@@ -162,6 +166,8 @@ export const GeneratedData = async (req: Request, res: Response) => {
       const sortedBalls = Object.entries(ballCounter).sort(
         (a, b) => b[1] - a[1]
       );
+
+console.log(sortedBalls)
       const mostCommonBalls = sortedBalls.slice(0, 3);
 
       const predictedBalls: number[] = mostCommonBalls.map(([ball]) =>

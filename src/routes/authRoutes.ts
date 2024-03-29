@@ -10,7 +10,7 @@ import {
   ClientRegister,
   TokenVerification,
 } from "../controllers/auth/client/ClientAuth";
-import { isAdminAuth } from "middlewares/admin/isAdminAuth";
+import { isAdminAuth } from "../middlewares/admin/isAdminAuth";
 
 const Router = express.Router();
 

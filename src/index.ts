@@ -27,7 +27,31 @@ app.use(express.json());
 
 // use cors (currently it's global)
 
-app.use(cors());
+// define origins
+
+const origins: string[] = [
+  "https://kolkataff.space",
+  "https://admin.kolkataff.space",
+];
+
+const corsOptions = {
+  origin: function (
+    origin: string | undefined,
+    callback: (error: Error | null, allow?: boolean) => void
+  ) {
+    if (!origin || origins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  optionsSuccessStatus: 200,
+};
+
+
+app.options("*", cors(corsOptions));
+
+app.use(cors(corsOptions));
 
 // routes
 
@@ -46,11 +70,11 @@ try {
 
   // listen
 
-  app.listen(process.env.PORT || 8080, () =>
+  app.listen(process.env.PORT || 8050, () =>
     console.log(`Listning on port ${process.env.PORT || 8080}`)
   );
 } catch (error) {
   console.log(error);
 }
 
-//mongodb://localhost:27017
+

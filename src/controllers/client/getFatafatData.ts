@@ -17,7 +17,7 @@ export const getFatafatData = async (req: Request, res: Response) => {
   }
 };
 
-export const getPreviousTenDays = async (req: Request, res: Response) => {
+export const getPreviousTwoDays = async (req: Request, res: Response) => {
   // Get the current date from the request parameters
   const currentDate: string = req.params.date;
 
@@ -25,7 +25,25 @@ export const getPreviousTenDays = async (req: Request, res: Response) => {
     // Fetch the last ten records excluding the current day
     const lastTen = await FatafatData.find({ date: { $ne: currentDate } })
       .sort({ createdAt: -1 })
-      .limit(10); // Fetch only the last ten records
+      .limit(2); // Fetch only the last ten records
+
+    return res.status(200).json(lastTen);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error while finding the data", error });
+  }
+};
+
+export const getPreviousTenDays = async (req: Request, res: Response) => {
+  // Get the current date from the request parameters
+  const currentDate: string = req.params.date;
+
+  try {
+    // Fetch the last ten records excluding the current day
+    const lastTen = await FatafatData.find()
+      .sort({ createdAt: -1 })
+      .limit(50); // Fetch only the last ten records
 
     return res.status(200).json(lastTen);
   } catch (error) {
