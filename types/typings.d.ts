@@ -4,6 +4,11 @@ export interface IDataObject {
   index: number;
 }
 
+export interface RepeatPattiObject {
+  patti: string;
+  index: number;
+}
+
 export interface TokenVerifyType {
   email: string;
   iat: number;

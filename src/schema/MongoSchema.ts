@@ -20,12 +20,26 @@ interface TipsData extends Document {
   // Add createdAt field
 }
 
+interface RepeatpattiData extends Document {
+  repeatPatti: { index: number; patti: string }[];
+  // Add createdAt field
+}
+
 const tips: Schema<TipsData> = new Schema({
   date: String,
   tips: [
     {
       index: { type: Number, required: true },
       tip: { type: String, required: true },
+    },
+  ],
+});
+
+const repeatpatti: Schema<RepeatpattiData> = new Schema({
+  repeatPatti: [
+    {
+      index: { type: Number, required: true },
+      patti: { type: String, required: true },
     },
   ],
 });
@@ -69,3 +83,7 @@ export const Tips = mongoose.model("Tips", tips);
 
 // Export Patti Tips
 export const KolkataFFTips = mongoose.model("KolkataFFTips", tips);
+
+// Export Repeat Patti
+
+export const RepeatPatti = mongoose.model("RepeatPatti", repeatpatti);

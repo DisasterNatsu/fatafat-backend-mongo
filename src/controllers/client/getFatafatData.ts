@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { FatafatData, KolkataFFTips, Tips } from "../../schema/MongoSchema";
+import {
+  FatafatData,
+  KolkataFFTips,
+  RepeatPatti,
+  Tips,
+} from "../../schema/MongoSchema";
 
 export const getFatafatData = async (req: Request, res: Response) => {
   const date: string = req.params.date;
@@ -104,5 +109,22 @@ export const getPattiTips = async (req: Request, res: Response) => {
     return res
       .status(500)
       .json({ message: "Error while finding the data", error });
+  }
+};
+
+// get repeat patti
+
+export const getRepeatPatti = async (req: Request, res: Response) => {
+  // try catch block
+
+  try {
+    const repeatPatti = await RepeatPatti.findOne();
+
+    return res.status(200).json(repeatPatti);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something happened while reading repeated patti",
+      error,
+    });
   }
 };
